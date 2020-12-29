@@ -4,11 +4,14 @@ const express = require("express");
 const morgan = require("morgan");
 // import the books-data js file
 const books = require("./books-data.js");
+// require the cors package
+const cors = require("cors");
 //import app that is built in object of express so we can use it
 const app = express();
 
 //use morgan as middleware and use the common formating option
 app.use(morgan("common"));
+app.use(cors());
 
 //create GET request using express app object, path and handler
 app.get("/books", (req, res) => {
