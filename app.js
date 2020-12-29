@@ -13,12 +13,26 @@ app.use(morgan("common"));
 //create GET request using express app object, path and handler
 app.get("/books", (req, res) => {
   // no parameter is required; we ca provide a default search value
-  const { search = "" } = req.query;
+  const { search = "", sort } = req.query;
+
+  // if there is a sort paramter, it must be validated (sort is not required)
+  if (sort) {
+    if (!["title", "rank"].includes(sort)) {
+      return res.status(400).send("Sort must be one of title or rank");
+    }
+  }
 
   // use the filter method to return an array of book titles that include the search string; lowercase the book list and the search string for convenience
   let results = books.filter((book) =>
     book.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  //After the books are filtered by the search, then we can sort
+  if (sort) {
+    results.sort((a, b) => {
+      return a[sort] > b[sort] ? 1 : a[sort] < b[sort] ? -1 : 0;
+    });
+  }
   res.json(results);
 });
 
