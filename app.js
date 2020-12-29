@@ -12,8 +12,14 @@ app.use(morgan("common"));
 
 //create GET request using express app object, path and handler
 app.get("/books", (req, res) => {
-  // return the entire list of books to see if the server works
-  res.json(books);
+  // no parameter is required; we ca provide a default search value
+  const { search = "" } = req.query;
+
+  // use the filter method to return an array of book titles that include the search string; lowercase the book list and the search string for convenience
+  let results = books.filter((book) =>
+    book.title.toLowerCase().includes(search.toLowerCase())
+  );
+  res.json(results);
 });
 
 app.listen(8000, () => {
