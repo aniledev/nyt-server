@@ -1,3 +1,4 @@
+// this file simply exports an array of objects
 module.exports = [
   {
     bestsellers_date: 1211587200000,
